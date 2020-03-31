@@ -19,6 +19,7 @@ public interface JpaBookmarkRepository extends JpaRepository<Bookmark, String> {
 
     Optional<Bookmark> findByUrl(String url);
 
+    // JPQL pur (Java Persistence Query Language)
     @Query("select distinct bk from Bookmark bk" +
             " LEFT JOIN FETCH bk.owner" +
             " LEFT JOIN FETCH bk.tags" +
@@ -43,7 +44,7 @@ public interface JpaBookmarkRepository extends JpaRepository<Bookmark, String> {
     @Query("select distinct bk from Bookmark bk")
     Slice<Bookmark> findAllSlice(Pageable pageable);
 
-    // projection classique avec HQL
+    // projection classique avec JPQL
     @Query("select new com.example.project.dao.projection.BookmarkView(bk.id, bk.url, bk.name, bk.owner.name) " +
             "from Bookmark bk " +
             "LEFT JOIN bk.owner ")
