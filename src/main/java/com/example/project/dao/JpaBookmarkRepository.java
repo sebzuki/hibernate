@@ -33,12 +33,12 @@ public interface JpaBookmarkRepository extends JpaRepository<Bookmark, String> {
     @Query("select distinct bk from Bookmark bk")
     List<Bookmark> findAllWithGraphAttr();
 
-    // pas toute la grappe ici pour répondre au pb du n+1 hibernate avec un requete supplémentaire en mode BatchSize
+    // pas toute la grappe ici pour répondre au "Hibernate N+1 query problem" avec un requete supplémentaire en mode BatchSize
     @EntityGraph(attributePaths = {"owner", "supports"})
     @Query("select distinct bk from Bookmark bk")
     Page<Bookmark> findAllPagination(Pageable pageable);
 
-    // pas toute la grappe ici pour répondre au pb du n+1 hibernate avec un requete supplémentaire en mode BatchSize
+    // pas toute la grappe ici pour répondre au "Hibernate N+1 query problem" avec un requete supplémentaire en mode BatchSize
     @EntityGraph(attributePaths = {"owner", "supports"})
     @Query("select distinct bk from Bookmark bk")
     Slice<Bookmark> findAllSlice(Pageable pageable);
