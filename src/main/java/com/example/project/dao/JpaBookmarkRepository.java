@@ -1,6 +1,7 @@
 package com.example.project.dao;
 
 import com.example.project.dao.domain.Bookmark;
+import com.example.project.dao.domain.BookmarkPage;
 import com.example.project.dao.projection.BookmarkDTO;
 import com.example.project.dao.projection.BookmarkView;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ public interface JpaBookmarkRepository extends JpaRepository<Bookmark, String> {
 
     Optional<Bookmark> findByUrl(String url);
 
+    // 1 seule requete
     // JPQL pur (Java Persistence Query Language)
     @Query("select distinct bk from Bookmark bk" +
             " LEFT JOIN FETCH bk.owner" +
@@ -26,30 +28,38 @@ public interface JpaBookmarkRepository extends JpaRepository<Bookmark, String> {
             " LEFT JOIN FETCH bk.supports ")
     List<Bookmark> findAll();
 
+    // 1 seule requete
     @EntityGraph(value = "bookmark.full")
     @Query("select distinct bk from Bookmark bk")
     List<Bookmark> findAllWithGraphName();
 
+    // 1 seule requete
     @EntityGraph(attributePaths = {"owner", "tags", "supports"})
     @Query("select distinct bk from Bookmark bk")
     List<Bookmark> findAllWithGraphAttr();
 
+    // 4 requetes avec le count que l'on peut surcharger
     // pas toute la grappe ici pour répondre au "Hibernate N+1 query problem" avec un requete supplémentaire en mode BatchSize
-    @EntityGraph(attributePaths = {"owner", "supports"})
-    @Query("select distinct bk from Bookmark bk")
-    Page<Bookmark> findAllPagination(Pageable pageable);
+    // le OneToOne ne pose pas de probleme car c'est le même tuple !!
+    @EntityGraph(attributePaths = {"owner"})
+    @Query("select bk from BookmarkPage bk")
+    Page<BookmarkPage> findAllPagination(Pageable pageable);
 
+    // 3 requetes sans le count
     // pas toute la grappe ici pour répondre au "Hibernate N+1 query problem" avec un requete supplémentaire en mode BatchSize
-    @EntityGraph(attributePaths = {"owner", "supports"})
-    @Query("select distinct bk from Bookmark bk")
-    Slice<Bookmark> findAllSlice(Pageable pageable);
+    // le OneToOne ne pose pas de probleme car c'est le même tuple !!
+    @EntityGraph(attributePaths = {"owner"})
+    @Query("select bk from BookmarkPage bk")
+    Slice<BookmarkPage> findAllSlice(Pageable pageable);
 
+    // 1 seule requete
     // projection classique avec JPQL
     @Query("select new com.example.project.dao.projection.BookmarkView(bk.id, bk.url, bk.name, bk.owner.name) " +
             "from Bookmark bk " +
             "LEFT JOIN bk.owner ")
     List<BookmarkView> findWithOwner();
 
+    // 1 seule requete
     // projection avec native query et mapping via interface/proxy
     @Query(nativeQuery = true,
             value = "select bm.id as id, bm.url as url, bm.name as bookmarkName, ow.name as ownerName " +

@@ -4,6 +4,7 @@
 package com.example.project.controller;
 
 import com.example.project.dao.domain.Bookmark;
+import com.example.project.dao.domain.BookmarkPage;
 import com.example.project.dao.projection.BookmarkView;
 import com.example.project.service.HelloService;
 import org.springframework.data.domain.Page;
@@ -36,13 +37,13 @@ public class Controller {
     }
 
     @GetMapping("findAllPagination")
-    Page<Bookmark> findAllPagination(@RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "6") int size) {
+    Page<BookmarkPage> findAllPagination(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "6") int size) {
         return helloService.findAllPagination(page, size);
     }
 
     @GetMapping("findAllSlice")
-    Slice<Bookmark> findAllSlice(@RequestParam(defaultValue = "0") int page,
+    Slice<BookmarkPage> findAllSlice(@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "6") int size) {
         return helloService.findAllSlice(page, size);
     }

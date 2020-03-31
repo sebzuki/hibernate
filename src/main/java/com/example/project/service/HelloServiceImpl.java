@@ -6,6 +6,7 @@ package com.example.project.service;
 import com.example.project.dao.HelloRepository;
 import com.example.project.dao.JpaBookmarkRepository;
 import com.example.project.dao.domain.Bookmark;
+import com.example.project.dao.domain.BookmarkPage;
 import com.example.project.dao.domain.Owner;
 import com.example.project.dao.domain.Tag;
 import com.example.project.dao.projection.BookmarkView;
@@ -47,13 +48,13 @@ public class HelloServiceImpl implements HelloService {
     }
 
     @Override
-    public Page<Bookmark> findAllPagination(int page, int size) {
+    public Page<BookmarkPage> findAllPagination(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
         return repository.findAllPagination(pageable);
     }
 
     @Override
-    public Slice<Bookmark> findAllSlice(int page, int size) {
+    public Slice<BookmarkPage> findAllSlice(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
         return repository.findAllSlice(pageable);
     }
