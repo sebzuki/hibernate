@@ -18,8 +18,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
@@ -57,14 +57,14 @@ public class HelloServiceImpl implements HelloService {
     @Transactional
     public CustomPage<BookmarkResource> findAllPagination(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
-        return bookmarkMapper.map(repository.findAllPagination(pageable));
+        return bookmarkMapper.mapPage(repository.findAllPagination(pageable));
     }
 
     @Override
     @Transactional
     public CustomSlice<BookmarkResource> findAllSlice(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
-        return bookmarkMapper.map(repository.findAllSlice(pageable));
+        return bookmarkMapper.mapSlice(repository.findAllSlice(pageable));
     }
 
     @Override

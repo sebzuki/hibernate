@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Component
 public class BookmarkMapper {
 
-    public CustomPage<BookmarkResource> map(Page<Bookmark> page) {
+    public CustomPage<BookmarkResource> mapPage(Page<Bookmark> page) {
         return new CustomPage<BookmarkResource>()
                 .setElements(mapResource(page.getContent()))
                 .setLast(page.isLast())
@@ -31,7 +31,7 @@ public class BookmarkMapper {
                 .setTotalPages(page.getTotalPages());
     }
 
-    public CustomSlice<BookmarkResource> map(Slice<Bookmark> slice) {
+    public CustomSlice<BookmarkResource> mapSlice(Slice<Bookmark> slice) {
         return new CustomSlice<BookmarkResource>()
                 .setElements(mapResource(slice.getContent()))
                 .setLast(slice.isLast())
