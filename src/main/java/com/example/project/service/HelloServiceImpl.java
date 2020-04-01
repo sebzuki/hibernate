@@ -49,8 +49,8 @@ public class HelloServiceImpl implements HelloService {
 
     @Override
     public List<Bookmark> findAll() {
-        return repository.findAllWithGraphAttr();
-        //         return helloRepository.findAll();
+//        return repository.findAllWithGraphAttr();
+        return helloRepository.findAll();
     }
 
     @Override

@@ -8,12 +8,10 @@ import com.example.project.dao.domain.Bookmark;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 public class HelloRepositoryImpl implements HelloRepository {
-    @PersistenceContext
     private final EntityManager em;
 
     public HelloRepositoryImpl(EntityManager em) {
