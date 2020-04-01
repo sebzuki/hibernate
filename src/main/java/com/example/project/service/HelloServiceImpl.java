@@ -9,6 +9,7 @@ import com.example.project.dao.domain.Bookmark;
 import com.example.project.dao.domain.BookmarkPage;
 import com.example.project.dao.domain.Owner;
 import com.example.project.dao.domain.Tag;
+import com.example.project.dao.projection.BookmarkDTO;
 import com.example.project.dao.projection.BookmarkView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -79,6 +80,12 @@ public class HelloServiceImpl implements HelloService {
     public Slice<BookmarkView> findWithProjectionSlice(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
         return repository.findWithProjectionSlice(pageable);
+    }
+
+    @Override
+    public Slice<BookmarkDTO> findWithProjectionNativeSlice(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
+        return repository.findWithProjectionNativeSlice(pageable);
     }
 }
 

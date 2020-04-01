@@ -5,6 +5,7 @@ package com.example.project.controller;
 
 import com.example.project.dao.domain.Bookmark;
 import com.example.project.dao.domain.BookmarkPage;
+import com.example.project.dao.projection.BookmarkDTO;
 import com.example.project.dao.projection.BookmarkView;
 import com.example.project.service.HelloService;
 import org.springframework.data.domain.Page;
@@ -57,5 +58,11 @@ public class Controller {
     Slice<BookmarkView> findWithProjectionSlice(@RequestParam(defaultValue = "0") int page,
                                                 @RequestParam(defaultValue = "6") int size) {
         return helloService.findWithProjectionSlice(page, size);
+    }
+
+    @GetMapping("findWithProjectionNativeSlice")
+    Slice<BookmarkDTO> findWithProjectionNativeSlice(@RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "6") int size) {
+        return helloService.findWithProjectionNativeSlice(page, size);
     }
 }
