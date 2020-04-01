@@ -35,8 +35,10 @@ public class HelloServiceImpl implements HelloService {
     @Transactional
     public List<Bookmark> find() {
         repository.saveAll(List.of(
-                new Bookmark("http://www.junit.org", "JUnit", Set.of(new Tag("test")), new Owner("own")),
-                new Bookmark("http://www.junit2.org", "JUnit2", Set.of(new Tag("test2")), new Owner("own2")))
+                new Bookmark("http://www.junit.org", "JUnit",
+                        Set.of(new Tag("test")), new Owner("own")),
+                new Bookmark("http://www.junit2.org", "JUnit2",
+                        Set.of(new Tag("test2")), new Owner("own2")))
         );
         return repository.findAll();
     }
@@ -60,10 +62,10 @@ public class HelloServiceImpl implements HelloService {
     }
 
     @Override
-    public List<BookmarkView> findWithOwner() {
-        return repository.findWithOwner();
+    public List<BookmarkView> findWithProjection() {
+        return repository.findWithProjection();
 
-//        return repository.findWithOwnerNative().stream()
+//        return repository.findWithProjectionNative().stream()
 //                .map(bookmarkDTO -> new BookmarkView(
 //                        bookmarkDTO.getId(),
 //                        bookmarkDTO.getUrl(),
@@ -71,6 +73,12 @@ public class HelloServiceImpl implements HelloService {
 //                        bookmarkDTO.getOwnerName()
 //                ))
 //                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Slice<BookmarkView> findWithProjectionSlice(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
+        return repository.findWithProjectionSlice(pageable);
     }
 }
 

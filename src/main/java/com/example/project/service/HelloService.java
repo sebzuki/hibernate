@@ -16,9 +16,11 @@ public interface HelloService {
 
     List<Bookmark> findAll();
 
-    List<BookmarkView> findWithOwner();
+    List<BookmarkView> findWithProjection();
 
     Page<BookmarkPage> findAllPagination(int page, int size);
 
     Slice<BookmarkPage> findAllSlice(int page, int size);
+
+    Slice<BookmarkView> findWithProjectionSlice(int page, int size);
 }

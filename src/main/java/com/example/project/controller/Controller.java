@@ -48,8 +48,14 @@ public class Controller {
         return helloService.findAllSlice(page, size);
     }
 
-    @GetMapping("findWithOwner")
-    List<BookmarkView> findWithOwner() {
-        return helloService.findWithOwner();
+    @GetMapping("findWithProjection")
+    List<BookmarkView> findWithProjection() {
+        return helloService.findWithProjection();
+    }
+
+    @GetMapping("findWithProjectionSlice")
+    Slice<BookmarkView> findWithProjectionSlice(@RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "6") int size) {
+        return helloService.findWithProjectionSlice(page, size);
     }
 }

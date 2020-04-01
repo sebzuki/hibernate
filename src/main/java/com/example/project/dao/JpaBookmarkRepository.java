@@ -57,12 +57,19 @@ public interface JpaBookmarkRepository extends JpaRepository<Bookmark, String> {
     @Query("select new com.example.project.dao.projection.BookmarkView(bk.id, bk.url, bk.name, bk.owner.name) " +
             "from Bookmark bk " +
             "LEFT JOIN bk.owner ")
-    List<BookmarkView> findWithOwner();
+    List<BookmarkView> findWithProjection();
 
     // 1 seule requete
     // projection avec native query et mapping via interface/proxy
     @Query(nativeQuery = true,
             value = "select bm.id as id, bm.url as url, bm.name as bookmarkName, ow.name as ownerName " +
                     "from BOOKMARK bm left outer join OWNER ow on bm.owner_id=ow.id")
-    List<BookmarkDTO> findWithOwnerNative();
+    List<BookmarkDTO> findWithProjectionNative();
+
+    // 1 seule requete
+    // projection classique avec JPQL
+    @Query("select new com.example.project.dao.projection.BookmarkView(bk.id, bk.url, bk.name, bk.owner.name) " +
+            "from Bookmark bk " +
+            "LEFT JOIN bk.owner ")
+    Slice<BookmarkView> findWithProjectionSlice(Pageable pageable);
 }
