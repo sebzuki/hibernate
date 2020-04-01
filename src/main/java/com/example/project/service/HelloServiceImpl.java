@@ -6,19 +6,20 @@ package com.example.project.service;
 import com.example.project.dao.HelloRepository;
 import com.example.project.dao.JpaBookmarkRepository;
 import com.example.project.dao.domain.Bookmark;
-import com.example.project.dao.domain.BookmarkPage;
 import com.example.project.dao.domain.Owner;
 import com.example.project.dao.domain.Tag;
 import com.example.project.dao.projection.BookmarkDTO;
 import com.example.project.dao.projection.BookmarkView;
-import org.springframework.data.domain.Page;
+import com.example.project.service.mapper.BookmarkMapper;
+import com.example.project.service.resource.BookmarkResource;
+import com.example.project.service.resource.CustomPage;
+import com.example.project.service.resource.CustomSlice;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
@@ -26,10 +27,12 @@ import java.util.Set;
 public class HelloServiceImpl implements HelloService {
     private final HelloRepository helloRepository;
     private final JpaBookmarkRepository repository;
+    private final BookmarkMapper bookmarkMapper;
 
-    public HelloServiceImpl(HelloRepository helloRepository, JpaBookmarkRepository repository) {
+    public HelloServiceImpl(HelloRepository helloRepository, JpaBookmarkRepository repository, BookmarkMapper bookmarkMapper) {
         this.helloRepository = helloRepository;
         this.repository = repository;
+        this.bookmarkMapper = bookmarkMapper;
     }
 
     @Override
@@ -51,15 +54,17 @@ public class HelloServiceImpl implements HelloService {
     }
 
     @Override
-    public Page<BookmarkPage> findAllPagination(int page, int size) {
+    @Transactional
+    public CustomPage<BookmarkResource> findAllPagination(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
-        return repository.findAllPagination(pageable);
+        return bookmarkMapper.map(repository.findAllPagination(pageable));
     }
 
     @Override
-    public Slice<BookmarkPage> findAllSlice(int page, int size) {
+    @Transactional
+    public CustomSlice<BookmarkResource> findAllSlice(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
-        return repository.findAllSlice(pageable);
+        return bookmarkMapper.map(repository.findAllSlice(pageable));
     }
 
     @Override
@@ -77,13 +82,13 @@ public class HelloServiceImpl implements HelloService {
     }
 
     @Override
-    public Slice<BookmarkView> findWithProjectionSlice(int page, int size) {
+    public org.springframework.data.domain.Slice<BookmarkView> findWithProjectionSlice(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
         return repository.findWithProjectionSlice(pageable);
     }
 
     @Override
-    public Slice<BookmarkDTO> findWithProjectionNativeSlice(int page, int size) {
+    public org.springframework.data.domain.Slice<BookmarkDTO> findWithProjectionNativeSlice(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
         return repository.findWithProjectionNativeSlice(pageable);
     }

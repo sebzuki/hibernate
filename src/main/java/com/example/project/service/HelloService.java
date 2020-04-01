@@ -4,11 +4,11 @@
 package com.example.project.service;
 
 import com.example.project.dao.domain.Bookmark;
-import com.example.project.dao.domain.BookmarkPage;
 import com.example.project.dao.projection.BookmarkDTO;
 import com.example.project.dao.projection.BookmarkView;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Slice;
+import com.example.project.service.resource.BookmarkResource;
+import com.example.project.service.resource.CustomPage;
+import com.example.project.service.resource.CustomSlice;
 
 import java.util.List;
 
@@ -19,11 +19,11 @@ public interface HelloService {
 
     List<BookmarkView> findWithProjection();
 
-    Page<BookmarkPage> findAllPagination(int page, int size);
+    CustomPage<BookmarkResource> findAllPagination(int page, int size);
 
-    Slice<BookmarkPage> findAllSlice(int page, int size);
+    CustomSlice<BookmarkResource> findAllSlice(int page, int size);
 
-    Slice<BookmarkView> findWithProjectionSlice(int page, int size);
+    org.springframework.data.domain.Slice<BookmarkView> findWithProjectionSlice(int page, int size);
 
-    Slice<BookmarkDTO> findWithProjectionNativeSlice(int page, int size);
+    org.springframework.data.domain.Slice<BookmarkDTO> findWithProjectionNativeSlice(int page, int size);
 }

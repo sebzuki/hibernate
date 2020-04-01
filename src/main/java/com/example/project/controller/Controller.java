@@ -4,11 +4,12 @@
 package com.example.project.controller;
 
 import com.example.project.dao.domain.Bookmark;
-import com.example.project.dao.domain.BookmarkPage;
 import com.example.project.dao.projection.BookmarkDTO;
 import com.example.project.dao.projection.BookmarkView;
 import com.example.project.service.HelloService;
-import org.springframework.data.domain.Page;
+import com.example.project.service.resource.BookmarkResource;
+import com.example.project.service.resource.CustomPage;
+import com.example.project.service.resource.CustomSlice;
 import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,14 +39,14 @@ public class Controller {
     }
 
     @GetMapping("findAllPagination")
-    Page<BookmarkPage> findAllPagination(@RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "6") int size) {
+    CustomPage<BookmarkResource> findAllPagination(@RequestParam(defaultValue = "0") int page,
+                                                   @RequestParam(defaultValue = "6") int size) {
         return helloService.findAllPagination(page, size);
     }
 
     @GetMapping("findAllSlice")
-    Slice<BookmarkPage> findAllSlice(@RequestParam(defaultValue = "0") int page,
-                                 @RequestParam(defaultValue = "6") int size) {
+    CustomSlice<BookmarkResource> findAllSlice(@RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "6") int size) {
         return helloService.findAllSlice(page, size);
     }
 

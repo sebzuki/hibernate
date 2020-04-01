@@ -36,11 +36,11 @@ public class Bookmark {
 
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Owner owner;
 
     // si la resource Tag est du type referentiel ou non en doublon
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @BatchSize(size = 6)
     @JoinTable(
             name = "BOOKMARK_TAGS",

@@ -1,7 +1,6 @@
 package com.example.project.dao;
 
 import com.example.project.dao.domain.Bookmark;
-import com.example.project.dao.domain.BookmarkPage;
 import com.example.project.dao.projection.BookmarkDTO;
 import com.example.project.dao.projection.BookmarkView;
 import org.springframework.data.domain.Page;
@@ -39,18 +38,18 @@ public interface JpaBookmarkRepository extends JpaRepository<Bookmark, String> {
     List<Bookmark> findAllWithGraphAttr();
 
     // 4 requetes avec le count que l'on peut surcharger
-    // pas toute la grappe ici pour répondre au "Hibernate N+1 query problem" avec un requete supplémentaire en mode BatchSize
+    // pas toute la grappe ici pour répondre au "Hibernate N+1 query problem" avec une requete supplémentaire en mode BatchSize pour chaque OneToMany
     // le OneToOne ne pose pas de probleme car c'est le même tuple !!
     @EntityGraph(attributePaths = {"owner"})
-    @Query("select bk from BookmarkPage bk")
-    Page<BookmarkPage> findAllPagination(Pageable pageable);
+    @Query("select bk from Bookmark bk")
+    Page<Bookmark> findAllPagination(Pageable pageable);
 
     // 3 requetes sans le count
-    // pas toute la grappe ici pour répondre au "Hibernate N+1 query problem" avec un requete supplémentaire en mode BatchSize
+    // pas toute la grappe ici pour répondre au "Hibernate N+1 query problem" avec une requete supplémentaire en mode BatchSize pour chaque OneToMany
     // le OneToOne ne pose pas de probleme car c'est le même tuple !!
     @EntityGraph(attributePaths = {"owner"})
-    @Query("select bk from BookmarkPage bk")
-    Slice<BookmarkPage> findAllSlice(Pageable pageable);
+    @Query("select bk from Bookmark bk")
+    Slice<Bookmark> findAllSlice(Pageable pageable);
 
     // 1 seule requete
     // projection classique avec JPQL
