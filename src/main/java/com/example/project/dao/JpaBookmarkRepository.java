@@ -20,19 +20,19 @@ public interface JpaBookmarkRepository extends JpaRepository<Bookmark, String> {
     Optional<Bookmark> findByUrl(String url);
 
     // 1 seule requete
-    // JPQL pur (Java Persistence Query Language)
+    // JPQL pur (Java Persistence Query Language), syntaxe controlée au démérrage
     @Query("select distinct bk from Bookmark bk" +
             " LEFT JOIN FETCH bk.owner" +
             " LEFT JOIN FETCH bk.tags" +
             " LEFT JOIN FETCH bk.supports ")
     List<Bookmark> findAll();
 
-    // 1 seule requete
+    // 1 seule requete, syntaxe controlée au runtime
     @EntityGraph(value = "bookmark.full")
     @Query("select distinct bk from Bookmark bk")
     List<Bookmark> findAllWithGraphName();
 
-    // 1 seule requete
+    // 1 seule requete, syntaxe controlée au runtime
     @EntityGraph(attributePaths = {"owner", "tags", "supports"})
     @Query("select distinct bk from Bookmark bk")
     List<Bookmark> findAllWithGraphAttr();
