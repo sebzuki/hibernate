@@ -51,7 +51,7 @@ public class Bookmark {
     )
     private Set<Tag> tags;
     // équivalent à ==>
-    //    @OneToMany(cascade = CascadeType.ALL)
+    //    @OneToMany(cascade = CascadeType.PERSIST)
     //    private Set<Tag> tags;
 
 
