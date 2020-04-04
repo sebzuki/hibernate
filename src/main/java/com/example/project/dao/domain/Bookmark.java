@@ -64,8 +64,8 @@ public class Bookmark {
 
     /**
      * A titre de comparaison, avec 200 000 enregistrements en base
-     * Si  @Fetch(FetchMode.SUBSELECT), select all avec pagination = 2s pour 4 requetes
-     * Si  @BatchSize(size = 6), select all avec pagination = 20ms pour 4 requetes
+     * Si  @Fetch(FetchMode.SUBSELECT), select all avec pagination => 2s (4 requetes) pour afficher la page 0
+     * Si  @BatchSize(size = 6), select all avec pagination => 20ms (4 requetes) pour afficher la page 0
      * Donc pas de pagination avec @Fetch(FetchMode.SUBSELECT) !!!
      */
 
