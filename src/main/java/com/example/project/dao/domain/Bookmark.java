@@ -43,6 +43,7 @@ public class Bookmark {
 
     // si la resource Tag est du type referentiel ou non en doublon
     @OneToMany(cascade = CascadeType.PERSIST)
+    @Fetch(FetchMode.SELECT) // optionel car defaut
     @BatchSize(size = 6)
     @JoinTable(
             name = "BOOKMARK_TAGS",
