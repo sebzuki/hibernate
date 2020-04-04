@@ -41,8 +41,8 @@ class JpaBookmarkRepositoryTest {
     static Stream<Arguments> bookmark() {
         return Stream.of(
                 arguments(
-                        new Bookmark("http://www.junit.org", "JUnit", Set.of(new Tag("test")), new Owner("own1")),
-                        new Bookmark("http://www.junit2.org", "JUnit2", Set.of(new Tag("test2")), new Owner("own1"))
+                        new Bookmark("http://www.junit.org", "JUnit", Set.of(new Tag("test")), new Owner("own1"), Set.of()),
+                        new Bookmark("http://www.junit2.org", "JUnit2", Set.of(new Tag("test2")), new Owner("own1"), Set.of())
                 ));
     }
 }

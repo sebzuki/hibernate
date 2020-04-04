@@ -72,10 +72,11 @@ public class Bookmark {
     public Bookmark() {
     }
 
-    public Bookmark(String url, String name, Set<Tag> tags, Owner owner) {
+    public Bookmark(String url, String name, Set<Tag> tags, Owner owner, Set<Support> supports) {
         this.url = url;
         this.name = name;
         this.tags = tags;
         this.owner = owner;
+        this.supports = supports;
     }
 }
