@@ -44,7 +44,7 @@ public class Bookmark {
     // si la resource Tag est du type referentiel ou non en doublon
     @OneToMany(cascade = CascadeType.PERSIST)
     @Fetch(FetchMode.SELECT) // optionel car defaut
-    @BatchSize(size = 6)
+    @BatchSize(size = 6) // si je sais combien de relation il peut y avoir, rapide
     @JoinTable(
             name = "BOOKMARK_TAGS",
             joinColumns = @JoinColumn(name = "BOOKMARK_ID", referencedColumnName = "ID"),
@@ -59,7 +59,7 @@ public class Bookmark {
     // si la Support support ne dépend que de bookmark
     // attention, ça génère des doublons sur la requete, necessite un distinct qui sera traité ai niveau du mapping
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookmark")
-    @Fetch(FetchMode.SUBSELECT)
+    @Fetch(FetchMode.SUBSELECT) // si je ne sais pas combien de relation il peut y avoir, moins rapide
     private Set<Support> supports;
 
     public Bookmark() {
