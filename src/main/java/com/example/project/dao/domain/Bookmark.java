@@ -62,6 +62,12 @@ public class Bookmark {
     @Fetch(FetchMode.SUBSELECT) // si je ne sais pas combien de relation il peut y avoir, moins rapide, pas d'impact sur le lazy loading
     private Set<Support> supports;
 
+    /**
+     * A titre de comparaison, avec 200 000 enregistrements en base
+     * Si  @Fetch(FetchMode.SUBSELECT), select all avec pagination = 2s pour 4 requetes
+     * Si  @BatchSize(size = 6), select all avec pagination = 20ms pour 4 requetes
+     */
+
     public Bookmark() {
     }
 

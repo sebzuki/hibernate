@@ -38,12 +38,15 @@ public class HelloServiceImpl implements HelloService {
     @Override
     @Transactional
     public List<Bookmark> find() {
-        repository.saveAll(List.of(
-                new Bookmark("http://www.junit.org", "JUnit",
-                        Set.of(new Tag("test")), new Owner("own")),
-                new Bookmark("http://www.junit2.org", "JUnit2",
-                        Set.of(new Tag("test2")), new Owner("own2")))
-        );
+        for (int i = 0; i < 3; i++) {
+            repository.saveAll(List.of(
+                    new Bookmark("http://www.junit.org", "JUnit",
+                            Set.of(new Tag("test")), new Owner("own")),
+                    new Bookmark("http://www.junit2.org", "JUnit2",
+                            Set.of(new Tag("test2")), new Owner("own2")))
+            );
+        }
+
         return repository.findAll();
     }
 
