@@ -49,6 +49,8 @@ public class HelloServiceImpl implements HelloService {
 
     @Override
     public List<Bookmark> findAll() {
+        // ici je ne fais pas de mapping donc si les fetch ne sont pas fait, lors du passage dans le controller,
+        // je vais un lazy loading exception
         return repository.findAllWithGraphAttr();
 //        return helloRepository.findAll();
     }
