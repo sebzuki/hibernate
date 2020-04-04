@@ -3,6 +3,8 @@ package com.example.project.dao.domain;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -56,7 +58,7 @@ public class Bookmark {
     // si la Support support ne dépend que de bookmark
     // attention, ça génère des doublons sur la requete, necessite un distinct qui sera traité ai niveau du mapping
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookmark")
-    @BatchSize(size = 6)
+    @Fetch(FetchMode.SUBSELECT)
     private Set<Support> supports;
 
     public Bookmark() {
