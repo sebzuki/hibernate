@@ -87,6 +87,7 @@ public class School {
     // si je ne sais pas combien de relation il peut y avoir, beaucoup moins rapide, pas d'impact sur le lazy loading
     // attention, le subselect a la portée de la requete principale !!!! donc potentiellement sans filtre
     // A ne pas utiliser sans filtre sur la requete principale
+    // Clairement pas fait pour la pagination avec grappe de données
     @Fetch(FetchMode.SUBSELECT)
     private Set<Teacher> teachers;
 
