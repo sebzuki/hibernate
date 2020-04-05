@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.NamedAttributeNode;
@@ -23,7 +24,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "SCHOOL")
+@Table(name = "SCHOOL",
+        indexes = @Index(name = "director_school_index", columnList = "director_id"))
 @NamedEntityGraph(
         name = "school.full",
         attributeNodes = {@NamedAttributeNode("director"), @NamedAttributeNode("students"), @NamedAttributeNode("teachers")}
@@ -58,11 +60,16 @@ public class School {
     // si la resource Student est du type referentiel
     @OneToMany(cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT) // optionel car defaut
-    @BatchSize(size = 6) // si je sais combien de relation il peut y avoir, rapide, pas d'impact sur le lazy loading
+    // si je sais combien de relation il peut y avoir, rapide, pas d'impact sur le lazy loading
+    @BatchSize(size = 6)
     @JoinTable(
             name = "SCHOOL_STUDENT",
             joinColumns = @JoinColumn(name = "SCHOOL_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "STUDENT_ID", referencedColumnName = "ID")
+            inverseJoinColumns = @JoinColumn(name = "STUDENT_ID", referencedColumnName = "ID"),
+            indexes = {
+                    @Index(name = "school_school_student_index", columnList = "school_id"),
+                    @Index(name = "student_school_student_index", columnList = "student_id")
+            }
     )
     private Set<Student> students;
     // équivalent à ==>
@@ -77,7 +84,10 @@ public class School {
     // Attention, ça génère des doublons sur la requete si FETCH, necessite un distinct qui sera traité au niveau du mapping
     // Plus compliqué pour la création
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "school")
-    @Fetch(FetchMode.SUBSELECT) // si je ne sais pas combien de relation il peut y avoir, beaucoup moins rapide, pas d'impact sur le lazy loading
+    // si je ne sais pas combien de relation il peut y avoir, beaucoup moins rapide, pas d'impact sur le lazy loading
+    // attention, le subselect a la portée de la requete principale !!!! donc potentiellement sans filtre
+    // A ne pas utiliser sans filtre sur la requete principale
+    @Fetch(FetchMode.SUBSELECT)
     private Set<Teacher> teachers;
 
     /**

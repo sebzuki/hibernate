@@ -48,7 +48,7 @@ public class HelloServiceImpl implements HelloService {
     @Override
     @Transactional
     public void save() {
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 6; i++) {
             School school = new School("Location" + i, "School" + i,
                     Set.of(new Student("StudentA" + i), new Student("StudentB" + i)),
                     new Director("Director" + i));

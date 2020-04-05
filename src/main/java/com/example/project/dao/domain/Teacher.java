@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,11 +17,12 @@ import javax.persistence.Table;
 @Entity
 @Getter
 @Setter
-@Table(name = "TEACHER")
+@Table(name = "TEACHER",
+        indexes = @Index(name = "school_teacher_index", columnList = "school_id"))
 public class Teacher {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String name;
