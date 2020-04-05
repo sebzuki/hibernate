@@ -93,7 +93,7 @@ public class School {
     /**
      * A titre de comparaison sur PGSql, avec 200 000 Schools en base (1 director, 2 teachers, 2 students)
      * Si @Fetch(FetchMode.SUBSELECT), select all avec pagination => 7.6s (4 requetes) pour afficher la page 0 avec 4 éléments
-     * Si @BatchSize(size = 6), select all avec pagination => 190ms (4 requetes) pour afficher la même page qu'avant
+     * Si @BatchSize(size = 6), select all avec pagination => 160ms (4 requetes) pour afficher la même page qu'avant
      * Donc pas de pagination avec @Fetch(FetchMode.SUBSELECT) !!!
      */
 
