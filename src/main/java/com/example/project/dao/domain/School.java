@@ -55,7 +55,7 @@ public class School {
     @OneToOne(cascade = CascadeType.ALL)
     private Director director;
 
-    // si la resource Student est du type referentiel ou non en doublon
+    // si la resource Student est du type referentiel
     @OneToMany(cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT) // optionel car defaut
     @BatchSize(size = 6) // si je sais combien de relation il peut y avoir, rapide, pas d'impact sur le lazy loading
@@ -70,18 +70,20 @@ public class School {
     //    private Set<Student> students
 
 
-    // si Teacher ne dépend que de school
-    // attention, ça génère des doublons sur la requete, necessite un distinct qui sera traité ai niveau du mapping
-    // plus compliqué pour la création
+    // Si Teacher ne dépend que de school et ne sera pas lié à une autre entité, alors on peut le lier directement
+    //     dans la table et économiser une table d'échange !
+    // Attention à la boucle infinie sur le mapping JSON (Jackson) si l'entité sort du controler (beurk)
+    //     faudra mettre du @JsonIgnore
+    // Attention, ça génère des doublons sur la requete si FETCH, necessite un distinct qui sera traité au niveau du mapping
+    // Plus compliqué pour la création
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "school")
-    @Fetch(FetchMode.SUBSELECT)
-    // si je ne sais pas combien de relation il peut y avoir, moins rapide, pas d'impact sur le lazy loading
+    @Fetch(FetchMode.SUBSELECT) // si je ne sais pas combien de relation il peut y avoir, beaucoup moins rapide, pas d'impact sur le lazy loading
     private Set<Teacher> teachers;
 
     /**
-     * A titre de comparaison, avec 200 000 enregistrements en base
-     * Si  @Fetch(FetchMode.SUBSELECT), select all avec pagination => 2s (4 requetes) pour afficher la page 0
-     * Si  @BatchSize(size = 6), select all avec pagination => 20ms (4 requetes) pour afficher la page 0
+     * A titre de comparaison sur PGSql, avec 200 000 Schools en base (1 director, 2 teachers, 2 students)
+     * Si @Fetch(FetchMode.SUBSELECT), select all avec pagination => 7.6s (4 requetes) pour afficher la page 0 avec 4 éléments
+     * Si @BatchSize(size = 6), select all avec pagination => 190ms (4 requetes) pour afficher la même page qu'avant
      * Donc pas de pagination avec @Fetch(FetchMode.SUBSELECT) !!!
      */
 

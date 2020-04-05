@@ -20,22 +20,21 @@ public interface JpaSchoolRepository extends JpaRepository<School, String> {
     Optional<School> findByLocation(String url);
 
     // 1 seule requete
-    // JPQL pur (Java Persistence Query Language), syntaxe controlée au démérrage
+    // JPQL pur (Java Persistence Query Language), syntaxe controlée au démarrage, idéal pour récupération d'une seule grappe
     @Query("select distinct sc from School sc" +
             " LEFT JOIN FETCH sc.director" +
             " LEFT JOIN FETCH sc.students" +
             " LEFT JOIN FETCH sc.teachers ")
-    List<School> findAll();
+    List<School> findAllWithJPQL();
 
     // 1 seule requete, syntaxe controlée au runtime
     @EntityGraph(value = "school.full")
-    @Query("select distinct sc from School sc")
+    @Query("select sc from School sc")
     List<School> findAllWithGraphName();
 
     // 1 seule requete, syntaxe controlée au runtime
     @EntityGraph(attributePaths = {"director", "students", "teachers"})
-    @Query("select distinct sc from School sc")
-    List<School> findAllWithGraphAttr();
+    List<School> findAll();
 
     // 4 requetes avec le count que l'on peut surcharger
     // pas toute la grappe ici pour répondre au "Hibernate N+1 query problem" avec une requete supplémentaire en mode BatchSize pour chaque OneToMany

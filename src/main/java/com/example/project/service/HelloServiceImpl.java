@@ -22,21 +22,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class HelloServiceImpl implements HelloService {
+    private final EntityManager em;
     private final HelloRepository helloRepository;
     private final JpaSchoolRepository jpaSchoolRepository;
     private final JpaTeacherRepository jpaTeacherRepository;
     private final SchoolMapper schoolMapper;
 
-    public HelloServiceImpl(HelloRepository helloRepository,
+    public HelloServiceImpl(EntityManager em, HelloRepository helloRepository,
                             JpaSchoolRepository jpaSchoolRepository,
                             JpaTeacherRepository jpaTeacherRepository,
                             SchoolMapper schoolMapper) {
+        this.em = em;
         this.helloRepository = helloRepository;
         this.jpaSchoolRepository = jpaSchoolRepository;
         this.jpaTeacherRepository = jpaTeacherRepository;
@@ -46,13 +48,18 @@ public class HelloServiceImpl implements HelloService {
     @Override
     @Transactional
     public void save() {
-        for (int i = 0; i < 6; i++) {
-            School school = new School("Location"+i, "School"+i,
-                    Set.of(new Student("Student" + i)), new Director("Director" + i));
+        for (int i = 0; i < 100000; i++) {
+            School school = new School("Location" + i, "School" + i,
+                    Set.of(new Student("StudentA" + i), new Student("StudentB" + i)),
+                    new Director("Director" + i));
             jpaSchoolRepository.save(school);
-            Teacher teacherA = new Teacher("TeacherA" + i, school);
-            Teacher teacherB = new Teacher("TeacherB" + i, school);
-            jpaTeacherRepository.saveAll(List.of(teacherA, teacherB));
+            jpaTeacherRepository.saveAll(List.of(
+                    new Teacher("TeacherA" + i, school),
+                    new Teacher("TeacherB" + i, school)));
+
+//            em.persist(school);
+//            em.persist(new Teacher("TeacherA" + i, school));
+//            em.persist(new Teacher("TeacherB" + i, school));
         }
     }
 
@@ -60,7 +67,7 @@ public class HelloServiceImpl implements HelloService {
     public List<School> findAll() {
         // ici je ne fais pas de mapping donc si les fetch ne sont pas fait, lors du passage dans le controller,
         // je vais un lazy loading exception
-        return jpaSchoolRepository.findAllWithGraphAttr();
+        return jpaSchoolRepository.findAllWithJPQL();
 //        return helloRepository.findAll();
     }
 
