@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class TagResource {
+public class TeacherResource {
     private long id;
     private String name;
 }

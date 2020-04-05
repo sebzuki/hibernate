@@ -12,8 +12,8 @@ import javax.persistence.Table;
 @Entity
 @Getter
 @Setter
-@Table(name = "TAG")
-public class Tag {
+@Table(name = "STUDENT")
+public class Student {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -21,10 +21,10 @@ public class Tag {
 
     private String name;
 
-    public Tag() {
+    public Student() {
     }
 
-    public Tag(String name) {
+    public Student(String name) {
         this.name = name;
     }
 }

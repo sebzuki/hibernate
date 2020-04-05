@@ -16,8 +16,8 @@ import javax.persistence.Table;
 @Entity
 @Getter
 @Setter
-@Table(name = "SUPPORT")
-public class Support {
+@Table(name = "TEACHER")
+public class Teacher {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -27,13 +27,14 @@ public class Support {
 
     @JsonIgnore // beurk resource obligatoire
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bookmark_id")
-    private Bookmark bookmark;
+    @JoinColumn(name = "school_id") // optionnel
+    private School school;
 
-    public Support() {
+    public Teacher() {
     }
 
-    public Support(String name) {
+    public Teacher(String name, School school) {
         this.name = name;
+        this.school = school;
     }
 }

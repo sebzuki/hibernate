@@ -12,8 +12,8 @@ import javax.persistence.Table;
 @Entity
 @Getter
 @Setter
-@Table(name = "OWNER")
-public class Owner {
+@Table(name = "DIRECTOR")
+public class Director {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -21,10 +21,10 @@ public class Owner {
 
     private String name;
 
-    public Owner() {
+    public Director() {
     }
 
-    public Owner(String name) {
+    public Director(String name) {
         this.name = name;
     }
 }

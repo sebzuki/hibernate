@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class OwnerResource {
+public class DirectorResource {
     private long id;
     private String name;
 }

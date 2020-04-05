@@ -3,11 +3,11 @@
  */
 package com.example.project.controller;
 
-import com.example.project.dao.domain.Bookmark;
-import com.example.project.dao.projection.BookmarkDTO;
-import com.example.project.dao.projection.BookmarkView;
+import com.example.project.dao.domain.School;
+import com.example.project.dao.projection.SchoolDTO;
+import com.example.project.dao.projection.SchoolView;
 import com.example.project.service.HelloService;
-import com.example.project.service.resource.BookmarkResource;
+import com.example.project.service.resource.SchoolResource;
 import com.example.project.service.resource.CustomPage;
 import com.example.project.service.resource.CustomSlice;
 import org.springframework.data.domain.Slice;
@@ -28,42 +28,42 @@ public class Controller {
         this.helloService = helloService;
     }
 
-    @GetMapping("find")
-    List<Bookmark> find() {
-        return helloService.find();
+    @GetMapping("save")
+    public void save() {
+        helloService.save();
     }
 
     @GetMapping("findAll")
-    List<Bookmark> findAll() {
+    public List<School> findAll() {
         return helloService.findAll();
     }
 
     @GetMapping("findAllPagination")
-    CustomPage<BookmarkResource> findAllPagination(@RequestParam(defaultValue = "0") int page,
-                                                   @RequestParam(defaultValue = "6") int size) {
+    public CustomPage<SchoolResource> findAllPagination(@RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "6") int size) {
         return helloService.findAllPagination(page, size);
     }
 
     @GetMapping("findAllSlice")
-    CustomSlice<BookmarkResource> findAllSlice(@RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "6") int size) {
+    public CustomSlice<SchoolResource> findAllSlice(@RequestParam(defaultValue = "0") int page,
+                                                    @RequestParam(defaultValue = "6") int size) {
         return helloService.findAllSlice(page, size);
     }
 
     @GetMapping("findWithProjection")
-    List<BookmarkView> findWithProjection() {
+    public List<SchoolView> findWithProjection() {
         return helloService.findWithProjection();
     }
 
     @GetMapping("findWithProjectionSlice")
-    Slice<BookmarkView> findWithProjectionSlice(@RequestParam(defaultValue = "0") int page,
-                                                @RequestParam(defaultValue = "6") int size) {
+    public Slice<SchoolView> findWithProjectionSlice(@RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "6") int size) {
         return helloService.findWithProjectionSlice(page, size);
     }
 
     @GetMapping("findWithProjectionNativeSlice")
-    Slice<BookmarkDTO> findWithProjectionNativeSlice(@RequestParam(defaultValue = "0") int page,
-                                                     @RequestParam(defaultValue = "6") int size) {
+    public Slice<SchoolDTO> findWithProjectionNativeSlice(@RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "6") int size) {
         return helloService.findWithProjectionNativeSlice(page, size);
     }
 }

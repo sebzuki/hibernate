@@ -4,7 +4,7 @@
 package com.example.project.dao;
 
 
-import com.example.project.dao.domain.Bookmark;
+import com.example.project.dao.domain.School;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -19,11 +19,11 @@ public class HelloRepositoryImpl implements HelloRepository {
     }
 
     @Override
-    public List<Bookmark> findAll() {
-        return em.createQuery("select distinct bk from Bookmark bk" +
-                " LEFT JOIN FETCH bk.owner" +
-                " LEFT JOIN FETCH bk.tags" +
-                " LEFT JOIN FETCH bk.supports ", Bookmark.class)
+    public List<School> findAll() {
+        return em.createQuery("select distinct sc from School sc" +
+                " LEFT JOIN FETCH sc.director" +
+                " LEFT JOIN FETCH sc.students" +
+                " LEFT JOIN FETCH sc.teachers ", School.class)
         .getResultList();
     }
 

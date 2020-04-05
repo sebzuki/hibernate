@@ -1,8 +1,8 @@
 package com.example.project.dao;
 
-import com.example.project.dao.domain.Bookmark;
-import com.example.project.dao.domain.Owner;
-import com.example.project.dao.domain.Tag;
+import com.example.project.dao.domain.School;
+import com.example.project.dao.domain.Director;
+import com.example.project.dao.domain.Student;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -24,25 +24,25 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @ActiveProfiles("test")
-class JpaBookmarkRepositoryTest {
-    @Autowired private JpaBookmarkRepository repository;
+class JpaSchoolRepositoryTest {
+    @Autowired private JpaSchoolRepository repository;
     @PersistenceContext private EntityManager em;
 
     @ParameterizedTest
-    @MethodSource("bookmark")
-    void findAll_should_list_all_bookmarks(Bookmark bookmark, Bookmark bookmark2) {
-        repository.saveAll(List.of(bookmark, bookmark2));
+    @MethodSource("school")
+    void findAll_should_list_all_schools(School school, School school2) {
+        repository.saveAll(List.of(school, school2));
 
         assertThat(repository.findAll())
-                .extracting(Bookmark::getName)
-                .containsExactlyInAnyOrder(bookmark.getName(), bookmark2.getName());
+                .extracting(School::getName)
+                .containsExactlyInAnyOrder(school.getName(), school2.getName());
     }
 
-    static Stream<Arguments> bookmark() {
+    static Stream<Arguments> school() {
         return Stream.of(
                 arguments(
-                        new Bookmark("http://www.junit.org", "JUnit", Set.of(new Tag("test")), new Owner("own1"), Set.of()),
-                        new Bookmark("http://www.junit2.org", "JUnit2", Set.of(new Tag("test2")), new Owner("own1"), Set.of())
+                        new School("http://www.junit.org", "JUnit", Set.of(new Student("test")), new Director("own1")),
+                        new School("http://www.junit2.org", "JUnit2", Set.of(new Student("test2")), new Director("own1"))
                 ));
     }
 }

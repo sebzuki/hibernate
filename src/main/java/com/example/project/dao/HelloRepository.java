@@ -3,12 +3,12 @@
  */
 package com.example.project.dao;
 
-import com.example.project.dao.domain.Bookmark;
+import com.example.project.dao.domain.School;
 
 import java.util.List;
 
 public interface HelloRepository {
-    List<Bookmark> findAll();
+    List<School> findAll();
 
     void save(String str);
 }
