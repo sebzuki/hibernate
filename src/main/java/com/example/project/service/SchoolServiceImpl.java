@@ -73,6 +73,12 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
+    // A noter l'absence de @Transactional ;)
+    public List<SchoolResource> findBy() {
+        return schoolMapper.mapResource(jpaSchoolRepository.findByLocation("Location0"));
+    }
+
+    @Override
     @Transactional
     public CustomPage<SchoolResource> findAllPagination(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));

@@ -38,6 +38,11 @@ public class Controller {
         return schoolService.findAll();
     }
 
+    @GetMapping("findBy")
+    public List<SchoolResource> findBy() {
+        return schoolService.findBy();
+    }
+
     @GetMapping("findAllPagination")
     public CustomPage<SchoolResource> findAllPagination(@RequestParam(defaultValue = "0") int page,
                                                         @RequestParam(defaultValue = "6") int size) {

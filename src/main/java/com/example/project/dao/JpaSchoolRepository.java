@@ -12,12 +12,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface JpaSchoolRepository extends JpaRepository<School, String> {
 
-    Optional<School> findByLocation(String url);
+    // Failed to initialize a collection si on oublie l'entity graph !
+    // 31ms si on récupère 10 éléments Scool avec tous les joins
+    // 36ms si on récupère 10 éléments Scool avec seulement le OneToOne et les BatchSize + SubSelect
+    // 149ms sans optim (34 requetes)
+    @EntityGraph(attributePaths = {"director", "students", "teachers"})
+    List<School> findByLocation(String location);
 
     // 1 seule requete, fait un produit cartesien, super rapide si les grappes sont de tailles résonnables (<100)
     // JPQL pur (Java Persistence Query Language), syntaxe controlée au démarrage, idéal pour récupération d'une seule grappe

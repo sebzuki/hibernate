@@ -40,7 +40,7 @@ public class SchoolMapper {
                 .setPageSize(slice.getPageable().getPageSize());
     }
 
-    List<SchoolResource> mapResource(List<School> schoolList) {
+    public List<SchoolResource> mapResource(List<School> schoolList) {
         return schoolList.stream()
                 .map(school -> new SchoolResource()
                         .setId(school.getId())

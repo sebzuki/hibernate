@@ -6,9 +6,9 @@ package com.example.project.service;
 import com.example.project.dao.domain.School;
 import com.example.project.dao.projection.SchoolDTO;
 import com.example.project.dao.projection.SchoolView;
-import com.example.project.service.resource.SchoolResource;
 import com.example.project.service.resource.CustomPage;
 import com.example.project.service.resource.CustomSlice;
+import com.example.project.service.resource.SchoolResource;
 
 import java.util.List;
 
@@ -18,6 +18,8 @@ public interface SchoolService {
     List<School> findAll();
 
     List<SchoolView> findWithProjection();
+
+    List<SchoolResource> findBy();
 
     CustomPage<SchoolResource> findAllPagination(int page, int size);
 
