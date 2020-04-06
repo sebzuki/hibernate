@@ -11,15 +11,16 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Repository
-public class HelloRepositoryImpl implements HelloRepository {
+public class SchoolRepositoryImpl implements SchoolRepository {
     private final EntityManager em;
 
-    public HelloRepositoryImpl(EntityManager em) {
+    public SchoolRepositoryImpl(EntityManager em) {
         this.em = em;
     }
 
+    // JPA’s Criteria API
     @Override
-    public List<School> findAll() {
+    public List<School> findAllWithCriteriaApi() {
         return em.createQuery("select distinct sc from School sc" +
                 " LEFT JOIN FETCH sc.director" +
                 " LEFT JOIN FETCH sc.students" +

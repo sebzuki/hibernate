@@ -3,9 +3,9 @@
  */
 package com.example.project.service;
 
-import com.example.project.dao.HelloRepository;
 import com.example.project.dao.JpaSchoolRepository;
 import com.example.project.dao.JpaTeacherRepository;
+import com.example.project.dao.SchoolRepository;
 import com.example.project.dao.domain.Director;
 import com.example.project.dao.domain.School;
 import com.example.project.dao.domain.Student;
@@ -27,19 +27,19 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class HelloServiceImpl implements HelloService {
+public class SchoolServiceImpl implements SchoolService {
     private final EntityManager em;
-    private final HelloRepository helloRepository;
+    private final SchoolRepository schoolRepository;
     private final JpaSchoolRepository jpaSchoolRepository;
     private final JpaTeacherRepository jpaTeacherRepository;
     private final SchoolMapper schoolMapper;
 
-    public HelloServiceImpl(EntityManager em, HelloRepository helloRepository,
-                            JpaSchoolRepository jpaSchoolRepository,
-                            JpaTeacherRepository jpaTeacherRepository,
-                            SchoolMapper schoolMapper) {
+    public SchoolServiceImpl(EntityManager em, SchoolRepository schoolRepository,
+                             JpaSchoolRepository jpaSchoolRepository,
+                             JpaTeacherRepository jpaTeacherRepository,
+                             SchoolMapper schoolMapper) {
         this.em = em;
-        this.helloRepository = helloRepository;
+        this.schoolRepository = schoolRepository;
         this.jpaSchoolRepository = jpaSchoolRepository;
         this.jpaTeacherRepository = jpaTeacherRepository;
         this.schoolMapper = schoolMapper;
@@ -49,8 +49,9 @@ public class HelloServiceImpl implements HelloService {
     @Transactional
     public void save() {
         for (int i = 0; i < 6; i++) {
-            School school = new School("Location" + i, "School" + i,
-                    Set.of(new Student("StudentA" + i), new Student("StudentB" + i)),
+            School school = new School("Location" + i, "School" + i, Set.of(
+                    new Student("StudentA" + i),
+                    new Student("StudentB" + i)),
                     new Director("Director" + i));
             jpaSchoolRepository.save(school);
             jpaTeacherRepository.saveAll(List.of(
@@ -67,8 +68,8 @@ public class HelloServiceImpl implements HelloService {
     public List<School> findAll() {
         // ici je ne fais pas de mapping donc si les fetch ne sont pas fait, lors du passage dans le controller,
         // je vais un lazy loading exception
-        return jpaSchoolRepository.findAllWithJPQL();
-//        return helloRepository.findAll();
+        return jpaSchoolRepository.findAll();
+//        return schoolRepository.findAllWithCriteriaApi();
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -50,8 +51,10 @@ public class School {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
+    @Column(name = "location") // optionel si meme nom
     private String location;
 
+    @Column(name = "name", length = 100)
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -84,7 +87,7 @@ public class School {
     // Attention, ça génère des doublons sur la requete si FETCH, necessite un distinct qui sera traité au niveau du mapping
     // Plus compliqué pour la création
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "school")
-    // si je ne sais pas combien de relation il peut y avoir, beaucoup moins rapide, pas d'impact sur le lazy loading
+    // Si je ne sais pas combien de relation il peut y avoir, beaucoup moins rapide, pas d'impact sur le lazy loading
     // attention, le subselect a la portée de la requete principale !!!! donc potentiellement sans filtre
     // A ne pas utiliser sans filtre sur la requete principale
     // Clairement pas fait pour la pagination avec grappe de données

@@ -19,7 +19,7 @@ public interface JpaSchoolRepository extends JpaRepository<School, String> {
 
     Optional<School> findByLocation(String url);
 
-    // 1 seule requete
+    // 1 seule requete, fait un produit cartesien, super rapide si les grappes sont de tailles résonnables (<100)
     // JPQL pur (Java Persistence Query Language), syntaxe controlée au démarrage, idéal pour récupération d'une seule grappe
     @Query("select distinct sc from School sc" +
             " LEFT JOIN FETCH sc.director" +
@@ -33,12 +33,15 @@ public interface JpaSchoolRepository extends JpaRepository<School, String> {
     List<School> findAllWithGraphName();
 
     // 1 seule requete, syntaxe controlée au runtime
+    // org.hibernate.loader.MultipleBagFetchException si on met plusieurs List dans l'entite au lieu des Set
     @EntityGraph(attributePaths = {"director", "students", "teachers"})
     List<School> findAll();
 
     // 4 requetes avec le count que l'on peut surcharger
     // pas toute la grappe ici pour répondre au "Hibernate N+1 query problem" avec une requete supplémentaire en mode BatchSize pour chaque OneToMany
-    // le OneToOne ne pose pas de probleme car c'est le même tuple !!
+    // Sinon erreur : "HHH000104: firstResult/maxResults specified with collection fetch; applying in memory"
+    // On ne peut pas mélanger fetch et pagination, sinon on tronquerait les résultats, la BD ne le permet pas
+    // le OneToOne ne pose pas de probleme car c'est le même tuple !! Donc il ne casse pas l'optimisation de la base
     @EntityGraph(attributePaths = {"director"})
     @Query("select sc from School sc")
     Page<School> findAllPagination(Pageable pageable);

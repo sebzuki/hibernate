@@ -12,7 +12,7 @@ import com.example.project.service.resource.CustomSlice;
 
 import java.util.List;
 
-public interface HelloService {
+public interface SchoolService {
     void save();
 
     List<School> findAll();
