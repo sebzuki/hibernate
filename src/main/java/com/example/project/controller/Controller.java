@@ -4,6 +4,7 @@
 package com.example.project.controller;
 
 import com.example.project.dao.domain.School;
+import com.example.project.dao.domain.Student;
 import com.example.project.dao.projection.SchoolDTO;
 import com.example.project.dao.projection.SchoolView;
 import com.example.project.service.SchoolService;
@@ -41,6 +42,11 @@ public class Controller {
     @GetMapping("findBy")
     public List<SchoolResource> findBy() {
         return schoolService.findBy();
+    }
+
+    @GetMapping("findStudentsByLocationAndName")
+    public List<Student> findStudentsByLocationAndName() {
+        return schoolService.findStudentsByLocationAndName();
     }
 
     @GetMapping("findAllPagination")

@@ -4,6 +4,7 @@
 package com.example.project.service;
 
 import com.example.project.dao.domain.School;
+import com.example.project.dao.domain.Student;
 import com.example.project.dao.projection.SchoolDTO;
 import com.example.project.dao.projection.SchoolView;
 import com.example.project.service.resource.CustomPage;
@@ -20,6 +21,8 @@ public interface SchoolService {
     List<SchoolView> findWithProjection();
 
     List<SchoolResource> findBy();
+
+    List<Student> findStudentsByLocationAndName();
 
     CustomPage<SchoolResource> findAllPagination(int page, int size);
 

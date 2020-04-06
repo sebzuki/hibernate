@@ -1,6 +1,7 @@
 package com.example.project.dao;
 
 import com.example.project.dao.domain.School;
+import com.example.project.dao.domain.Student;
 import com.example.project.dao.projection.SchoolDTO;
 import com.example.project.dao.projection.SchoolView;
 import org.springframework.data.domain.Page;
@@ -9,24 +10,15 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-@Repository
 public interface JpaSchoolRepository extends JpaRepository<School, String> {
-
-    // Failed to initialize a collection si on oublie l'entity graph !
-    // 31ms si on récupère 10 éléments Scool avec tous les joins
-    // 36ms si on récupère 10 éléments Scool avec seulement le OneToOne et les BatchSize + SubSelect
-    // 149ms sans optim (34 requetes)
-    @EntityGraph(attributePaths = {"director", "students", "teachers"})
-    List<School> findByLocation(String location);
-
     // 1 seule requete, fait un produit cartesien, super rapide si les grappes sont de tailles résonnables (<100)
     // JPQL pur (Java Persistence Query Language), syntaxe controlée au démarrage, idéal pour récupération d'une seule grappe
     @Query("select distinct sc from School sc" +
-            " LEFT JOIN FETCH sc.director" +
+            " INNER JOIN FETCH sc.director" +
             " LEFT JOIN FETCH sc.students" +
             " LEFT JOIN FETCH sc.teachers ")
     List<School> findAllWithJPQL();
@@ -84,4 +76,44 @@ public interface JpaSchoolRepository extends JpaRepository<School, String> {
             value = "select sc.id as id, sc.location as location, sc.name as name, di.name as directorName " +
                     "from SCHOOL sc left outer join DIRECTOR di on sc.director_id=di.id")
     Slice<SchoolDTO> findWithProjectionNativeSlice(Pageable pageable);
+
+    // Failed to initialize a collection si on oublie l'entity graph !
+    // 31ms si on récupère 10 éléments Scool avec tous les joins
+    // 36ms si on récupère 10 éléments Scool avec seulement le OneToOne et les BatchSize + SubSelect
+    // 50ms sans optim (34 requetes)
+    @EntityGraph(attributePaths = {"director", "students", "teachers"})
+    List<School> findByLocation(String location);
+
+    @EntityGraph(attributePaths = {"director", "students", "teachers"})
+    List<School> findByLocationOrderByName(String location);
+
+    @EntityGraph(attributePaths = {"director", "students", "teachers"})
+    @Query(" select sc from School sc " +
+           " where sc.location like %:location% " +
+           " order by sc.name ")
+    List<School> findCustom(@Param("location") String location);
+
+    // Filtrer la sous collection
+    @Query("select sc from School sc" +
+            " INNER JOIN FETCH sc.director" + // seulement les écoles avec Director
+            " LEFT JOIN FETCH sc.students st " +
+            " LEFT JOIN FETCH sc.teachers te " +
+            " where sc.location like %:location% " +
+            " and st.name like %:studentName% " +
+            " order by sc.name ")
+    List<School> findCustomJoin(
+            @Param("location") String location,
+            @Param("studentName") String studentName
+    );
+
+    // ici je peux renvoyer autre chose que School car ça ne rentre pas en conflit avec les requetes de base qui sont paramétrées
+    @Query("select st from School sc" +
+            " LEFT JOIN sc.students st " +
+            " where sc.location like %:location " +
+            " and st.name like :studentName% " +
+            " order by st.name ")
+    List<Student> findStudentsByLocationAndName(
+            @Param("location") String location,
+            @Param("studentName") String studentName
+    );
 }

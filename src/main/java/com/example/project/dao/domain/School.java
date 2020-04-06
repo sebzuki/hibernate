@@ -49,7 +49,7 @@ public class School {
     //    )
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    private Long id;
 
     @Column(name = "location") // optionel si meme nom
     private String location;

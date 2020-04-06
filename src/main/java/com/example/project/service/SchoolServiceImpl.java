@@ -75,21 +75,33 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     // A noter l'absence de @Transactional ;)
     public List<SchoolResource> findBy() {
-        return schoolMapper.mapResource(jpaSchoolRepository.findByLocation("Location0"));
+//        Example<School> example = Example.of(
+//                new School("Location0", null, null, null),
+//                matching().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING));
+
+        return schoolMapper.mapResource(
+                jpaSchoolRepository.findCustomJoin("ocation0", "StudentB"));
+    }
+
+    @Override
+    public List<Student> findStudentsByLocationAndName() {
+        return jpaSchoolRepository.findStudentsByLocationAndName("ocation0", "StudentB");
     }
 
     @Override
     @Transactional
     public CustomPage<SchoolResource> findAllPagination(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
-        return schoolMapper.mapPage(jpaSchoolRepository.findAllPagination(pageable));
+        return schoolMapper.mapPage(
+                jpaSchoolRepository.findAllPagination(pageable));
     }
 
     @Override
     @Transactional
     public CustomSlice<SchoolResource> findAllSlice(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
-        return schoolMapper.mapSlice(jpaSchoolRepository.findAllSlice(pageable));
+        return schoolMapper.mapSlice(
+                jpaSchoolRepository.findAllSlice(pageable));
     }
 
     @Override
