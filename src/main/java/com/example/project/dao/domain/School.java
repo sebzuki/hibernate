@@ -97,8 +97,11 @@ public class School {
     /**
      * A titre de comparaison sur PGSql, avec 200 000 Schools en base (1 director, 2 teachers, 2 students)
      * Si @Fetch(FetchMode.SUBSELECT), select all avec pagination => 7.6s (4 requetes) pour afficher la page 0 avec 4 éléments
+     *    (presque 11s si on met des UUID à la place des long
      * Si @BatchSize(size = 6), select all avec pagination => 160ms (4 requetes) pour afficher la même page qu'avant
      * Donc pas de pagination avec @Fetch(FetchMode.SUBSELECT) !!!
+     *
+     * Le remplacement de long par UUID a un impact important sur la taille de la BD : 590Mo -> 790Mo pour 1 000 000 d'enregistrements d'une table de 4 colonnes
      */
 
     public School() {
