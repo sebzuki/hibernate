@@ -48,7 +48,7 @@ public class School {
     //            generator = "sequenceGenerator"
     //    )
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "location") // optionel si meme nom
