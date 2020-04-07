@@ -96,7 +96,7 @@ public interface JpaSchoolRepository extends JpaRepository<School, String> {
     List<School> findCustom(@Param("location") String location);
 
     // Filtrer la sous collection
-    @Query("SELECT sc FROM School sc " +
+    @Query("SELECT distinct sc FROM School sc " +
            "INNER JOIN FETCH sc.director " + // seulement les écoles avec Director
            "LEFT JOIN FETCH sc.students st " +
            "LEFT JOIN FETCH sc.teachers te " +
