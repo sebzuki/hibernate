@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/../angular/sle/src/app/app.component.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angular/sle/src/app/core/core.module.ts" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angular/sle/src/app/core/users.service.ts" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angular/sle/src/app/domain/apiResponse.ts" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angular/sle/src/app/domain/user.ts" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angular/sle/src/app/profile/profile-routing.module.ts" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angular/sle/src/app/profile/profile.module.ts" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angular/sle/src/app/profile/user-list/user-list-datasource.ts" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angular/sle/src/app/profile/user-list/user-list.component.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angular/sle/src/app/shared/shared.module.ts" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>
