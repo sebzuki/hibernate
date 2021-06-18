@@ -7,6 +7,7 @@ import com.example.project.dao.projection.SchoolView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface JpaSchoolRepository extends JpaRepository<School, String> {
+
     // 1 seule requete, fait un produit cartesien, super rapide si les grappes sont de tailles résonnables (<100)
     // JPQL pur (Java Persistence Query Language), syntaxe controlée au démarrage, idéal pour récupération d'une seule grappe
     @Query("SELECT distinct sc FROM School sc" +
@@ -33,11 +35,16 @@ public interface JpaSchoolRepository extends JpaRepository<School, String> {
     @EntityGraph(attributePaths = {"director", "students", "teachers"})
     List<School> findAll();
 
+    @Query("SELECT distinct sc FROM School sc" +
+            " INNER JOIN FETCH sc.director")
+    List<School> findByBatch();
+
     // 4 requetes avec le count que l'on peut surcharger
     // pas toute la grappe ici pour répondre au "Hibernate N+1 query problem" avec une requete supplémentaire en mode BatchSize pour chaque OneToMany
     // Sinon erreur : "HHH000104: firstResult/maxResults specified with collection fetch; applying in memory"
     // On ne peut pas mélanger fetch et pagination, sinon on tronquerait les résultats, la BD ne le permet pas
     // le OneToOne ne pose pas de probleme car c'est le même tuple !! Donc il ne casse pas l'optimisation de la base
+    // @EntityGraph(attributePaths = {"director", "students", "teachers"})
     @EntityGraph(attributePaths = {"director"})
     @Query("SELECT sc FROM School sc")
     Page<School> findAllPagination(Pageable pageable);
@@ -54,7 +61,7 @@ public interface JpaSchoolRepository extends JpaRepository<School, String> {
     @Query("SELECT new com.example.project.dao.projection.SchoolView(sc.id, sc.location, sc.name, sc.director.name) " +
             "FROM School sc " +
             "LEFT JOIN sc.director ")
-    List<SchoolView> findWithProjection();
+    List<SchoolView> findWithProjection(Sort sort);
 
     // 1 seule requete
     // projection avec native query et mapping via interface/proxy
@@ -83,29 +90,25 @@ public interface JpaSchoolRepository extends JpaRepository<School, String> {
     // 31ms si on récupère 10 éléments Scool avec tous les JOINs
     // 36ms si on récupère 10 éléments Scool avec seulement le OneToOne et les BatchSize + SubSELECT
     // 50ms sans optim (34 requetes)
-    @EntityGraph(attributePaths = {"director", "students", "teachers"})
-    List<School> findByLocation(String location);
-
-    @EntityGraph(attributePaths = {"director", "students", "teachers"})
+    @EntityGraph(attributePaths = {"director"})
     List<School> findByLocationOrderByName(String location);
 
-    @EntityGraph(attributePaths = {"director", "students", "teachers"})
+    @EntityGraph(attributePaths = {"director"})
     @Query("SELECT sc FROM School sc " +
            "WHERE sc.location LIKE %:location% " +
            "ORDER BY sc.name ")
-    List<School> findCustom(@Param("location") String location);
+    List<School> findByLocationCustom(
+            @Param("location") String location);
 
     // Filtrer la sous collection
     @Query("SELECT distinct sc FROM School sc " +
            "INNER JOIN FETCH sc.director " + // seulement les écoles avec Director
            "LEFT JOIN FETCH sc.students st " +
            "LEFT JOIN FETCH sc.teachers te " +
-           "WHERE sc.location LIKE %:location% " +
-           "AND st.name LIKE %:studentName% " +
+           "WHERE sc.location = :location " +
            "ORDER BY sc.name ")
-    List<School> findCustomJoin(
-            @Param("location") String location,
-            @Param("studentName") String studentName
+    List<School> findByLocationJPQL(
+            @Param("location") String location
     );
 
     // ici je peux renvoyer autre chose que School car ça ne rentre pas en conflit avec les requetes de base qui sont paramétrées

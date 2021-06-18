@@ -31,7 +31,9 @@ public class Controller {
 
     @GetMapping("save")
     public void save() {
-        schoolService.save();
+        for (int i = 0; i < 1; i++) {
+            schoolService.save(i);
+        }
     }
 
     @GetMapping("findAll")
@@ -39,9 +41,14 @@ public class Controller {
         return schoolService.findAll();
     }
 
-    @GetMapping("findBy")
-    public List<SchoolResource> findBy() {
-        return schoolService.findBy();
+    @GetMapping("findByBatch")
+    public List<SchoolResource> findByBatch() {
+        return schoolService.findByBatch();
+    }
+
+    @GetMapping("findByLocation")
+    public List<SchoolResource> findByLocation() {
+        return schoolService.findByLocation();
     }
 
     @GetMapping("findStudentsByLocationAndName")
@@ -51,13 +58,13 @@ public class Controller {
 
     @GetMapping("findAllPagination")
     public CustomPage<SchoolResource> findAllPagination(@RequestParam(defaultValue = "0") int page,
-                                                        @RequestParam(defaultValue = "6") int size) {
+                                                        @RequestParam(defaultValue = "50") int size) {
         return schoolService.findAllPagination(page, size);
     }
 
     @GetMapping("findAllSlice")
     public CustomSlice<SchoolResource> findAllSlice(@RequestParam(defaultValue = "0") int page,
-                                                    @RequestParam(defaultValue = "6") int size) {
+                                                    @RequestParam(defaultValue = "50") int size) {
         return schoolService.findAllSlice(page, size);
     }
 
@@ -68,13 +75,13 @@ public class Controller {
 
     @GetMapping("findWithProjectionSlice")
     public Slice<SchoolView> findWithProjectionSlice(@RequestParam(defaultValue = "0") int page,
-                                                     @RequestParam(defaultValue = "6") int size) {
+                                                     @RequestParam(defaultValue = "50") int size) {
         return schoolService.findWithProjectionSlice(page, size);
     }
 
     @GetMapping("findWithProjectionNativeSlice")
     public Slice<SchoolDTO> findWithProjectionNativeSlice(@RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "6") int size) {
+                                                          @RequestParam(defaultValue = "50") int size) {
         return schoolService.findWithProjectionNativeSlice(page, size);
     }
 }

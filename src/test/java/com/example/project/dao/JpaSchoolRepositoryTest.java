@@ -1,7 +1,7 @@
 package com.example.project.dao;
 
-import com.example.project.dao.domain.School;
 import com.example.project.dao.domain.Director;
+import com.example.project.dao.domain.School;
 import com.example.project.dao.domain.Student;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

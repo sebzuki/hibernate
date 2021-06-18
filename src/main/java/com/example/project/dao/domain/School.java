@@ -9,12 +9,14 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
@@ -26,7 +28,11 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "SCHOOL",
-        indexes = @Index(name = "director_school_index", columnList = "director_id"))
+        indexes = {
+                @Index(name = "director_school_index", columnList = "director_id"),
+                @Index(name = "name_school_index", columnList = "name"),
+                @Index(name = "location_school_index", columnList = "location")
+        })
 @NamedEntityGraph(
         name = "school.full",
         attributeNodes = {@NamedAttributeNode("director"), @NamedAttributeNode("students"), @NamedAttributeNode("teachers")}
@@ -57,14 +63,15 @@ public class School {
     @Column(name = "name", length = 100)
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "director_id")
     private Director director;
 
     // si la resource Student est du type referentiel
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Fetch(FetchMode.SELECT) // optionel car defaut
-    // si je sais combien de relation il peut y avoir, rapide, pas d'impact sur le lazy loading
-    @BatchSize(size = 6)
+    // si je sais combien de relation il peut y avoir, rapide, pas d'impact sur le lazy loading : oblige à savoir !
+    @BatchSize(size = 1000)
     @JoinTable(
             name = "SCHOOL_STUDENT",
             joinColumns = @JoinColumn(name = "SCHOOL_ID", referencedColumnName = "ID"),
@@ -86,12 +93,13 @@ public class School {
     //     faudra mettre du @JsonIgnore
     // Attention, ça génère des doublons sur la requete si FETCH, necessite un distinct qui sera traité au niveau du mapping
     // Plus compliqué pour la création
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "school")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "school", fetch = FetchType.LAZY)
     // Si je ne sais pas combien de relation il peut y avoir, beaucoup moins rapide, pas d'impact sur le lazy loading
     // attention, le subselect a la portée de la requete principale !!!! donc potentiellement sans filtre
     // A ne pas utiliser sans filtre sur la requete principale
     // Clairement pas fait pour la pagination avec grappe de données
-    @Fetch(FetchMode.SUBSELECT)
+    @BatchSize(size = 1000)
+//    @Fetch(FetchMode.SUBSELECT)
     private Set<Teacher> teachers;
 
     /**

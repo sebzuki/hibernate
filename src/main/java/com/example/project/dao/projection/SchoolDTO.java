@@ -1,6 +1,7 @@
 package com.example.project.dao.projection;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.beans.factory.annotation.Value;
 
 public interface SchoolDTO {
 
@@ -15,4 +16,7 @@ public interface SchoolDTO {
 
     @JsonProperty("directorName")
     String getDirectorName();
+
+    @Value("#{ target.name + ' -> ' + target.location }")
+    String getNameLocation();
 }

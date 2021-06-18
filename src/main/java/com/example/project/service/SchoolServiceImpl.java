@@ -26,6 +26,8 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Set;
 
+import static org.springframework.data.domain.Sort.Direction.ASC;
+
 @Service
 public class SchoolServiceImpl implements SchoolService {
     private final EntityManager em;
@@ -47,16 +49,16 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     @Transactional
-    public void save() {
+    public void save(int j) {
         for (int i = 0; i < 6; i++) {
-            School school = new School("Location" + i, "School" + i, Set.of(
-                    new Student("StudentA" + i),
-                    new Student("StudentB" + i)),
-                    new Director("Director" + i));
+            School school = new School("Location" + i+j, "School" + i+j, Set.of(
+                    new Student("StudentA" + i+j),
+                    new Student("StudentB" + i+j)),
+                    new Director("Director" + i+j));
             jpaSchoolRepository.save(school);
             jpaTeacherRepository.saveAll(List.of(
-                    new Teacher("TeacherA" + i, school),
-                    new Teacher("TeacherB" + i, school)));
+                    new Teacher("TeacherA" + i+j, school),
+                    new Teacher("TeacherB" + i+j, school)));
 
 //            em.persist(school);
 //            em.persist(new Teacher("TeacherA" + i, school));
@@ -65,6 +67,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
+    // A noter l'absence de @Transactional ;)
     public List<School> findAll() {
         // ici je ne fais pas de mapping donc si les fetch ne sont pas fait, lors du passage dans le controller,
         // je vais un lazy loading exception
@@ -72,15 +75,23 @@ public class SchoolServiceImpl implements SchoolService {
 //        return schoolRepository.findAllWithCriteriaApi();
     }
 
+
     @Override
-    // A noter l'absence de @Transactional ;)
-    public List<SchoolResource> findBy() {
+    @Transactional
+    public List<SchoolResource> findByBatch() {
+        return schoolMapper.mapResource(
+                jpaSchoolRepository.findByBatch());
+    }
+
+    @Override
+    @Transactional
+    public List<SchoolResource> findByLocation() {
 //        Example<School> example = Example.of(
 //                new School("Location0", null, null, null),
 //                matching().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING));
 
         return schoolMapper.mapResource(
-                jpaSchoolRepository.findCustomJoin("ocation0", "StudentB"));
+                jpaSchoolRepository.findByLocationCustom("ROUEN"));
     }
 
     @Override
@@ -89,7 +100,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public CustomPage<SchoolResource> findAllPagination(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
         return schoolMapper.mapPage(
@@ -97,7 +108,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public CustomSlice<SchoolResource> findAllSlice(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
         return schoolMapper.mapSlice(
@@ -106,7 +117,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public List<SchoolView> findWithProjection() {
-        return jpaSchoolRepository.findWithProjection();
+        return jpaSchoolRepository.findWithProjection(Sort.by(ASC, "name"));
 
 //        return jpaSchoolRepository.findWithProjectionNative().stream()
 //                .map(schoolDTO -> new SchoolView(

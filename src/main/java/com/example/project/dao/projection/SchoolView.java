@@ -1,19 +1,14 @@
 package com.example.project.dao.projection;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class SchoolView {
 
-    private long id;
-    private String location;
-    private String name;
-    private String directorName;
-
-    public SchoolView(long id, String location, String name, String directorName) {
-        this.id = id;
-        this.location = location;
-        this.name = name;
-        this.directorName = directorName;
-    }
+    private final long id;
+    private final String location;
+    private final String name;
+    private final String directorName;
 }

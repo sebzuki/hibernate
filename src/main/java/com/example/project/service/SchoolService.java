@@ -14,13 +14,16 @@ import com.example.project.service.resource.SchoolResource;
 import java.util.List;
 
 public interface SchoolService {
-    void save();
+
+    void save(int j);
 
     List<School> findAll();
 
     List<SchoolView> findWithProjection();
 
-    List<SchoolResource> findBy();
+    List<SchoolResource> findByBatch();
+
+    List<SchoolResource> findByLocation();
 
     List<Student> findStudentsByLocationAndName();
 

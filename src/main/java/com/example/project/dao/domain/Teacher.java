@@ -18,7 +18,9 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Table(name = "TEACHER",
-        indexes = @Index(name = "school_teacher_index", columnList = "school_id"))
+        indexes = {
+            @Index(name = "school_teacher_index", columnList = "school_id")
+        })
 public class Teacher {
 
     @Id
