@@ -2,7 +2,6 @@ package com.example.project.dao.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -71,7 +70,7 @@ public class School {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Fetch(FetchMode.SELECT) // optionel car defaut
     // si je sais combien de relation il peut y avoir, rapide, pas d'impact sur le lazy loading : oblige à savoir !
-    @BatchSize(size = 50)
+//    @BatchSize(size = 50)
     @JoinTable(
             name = "SCHOOL_STUDENT",
             joinColumns = @JoinColumn(name = "SCHOOL_ID", referencedColumnName = "ID"),
@@ -99,7 +98,7 @@ public class School {
     // A ne pas utiliser sans filtre sur la requete principale
     // Clairement pas fait pour la pagination avec grappe de données
 //    @Fetch(FetchMode.SUBSELECT)
-    @BatchSize(size = 50)
+//    @BatchSize(size = 50)
     private Set<Teacher> teachers;
 
     /**

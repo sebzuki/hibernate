@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public interface JpaSchoolRepository extends JpaRepository<School, Long> {
 
-    @EntityGraph(attributePaths = {"director", "students", "teachers"})
+//    @EntityGraph(attributePaths = {"director", "students", "teachers"})
     Optional<School> findById(long id);
 
     // 1 seule requete, fait un produit cartesien, super rapide si les grappes sont de tailles résonnables (<100)
