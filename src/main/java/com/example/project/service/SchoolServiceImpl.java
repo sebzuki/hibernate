@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.springframework.data.domain.Sort.Direction.ASC;
@@ -66,6 +67,14 @@ public class SchoolServiceImpl implements SchoolService {
         }
     }
 
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<SchoolResource> findById(long id) {
+        return jpaSchoolRepository.findById(id)
+                .map(schoolMapper::mapSchool);
+    }
+
     @Override
     // A noter l'absence de @Transactional ;)
     public List<School> findAll() {
@@ -84,14 +93,14 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    @Transactional
-    public List<SchoolResource> findByLocation() {
+    @Transactional(readOnly = true)
+    public List<SchoolResource> findByLocation(String location) {
 //        Example<School> example = Example.of(
 //                new School("Location0", null, null, null),
 //                matching().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING));
 
         return schoolMapper.mapResource(
-                jpaSchoolRepository.findByLocationCustom("ROUEN"));
+                jpaSchoolRepository.findByLocationCustom(location));
     }
 
     @Override

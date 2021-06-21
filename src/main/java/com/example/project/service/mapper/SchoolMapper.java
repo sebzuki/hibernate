@@ -42,23 +42,27 @@ public class SchoolMapper {
 
     public List<SchoolResource> mapResource(List<School> schoolList) {
         return schoolList.stream()
-                .map(school -> new SchoolResource()
-                        .setId(school.getId())
-                        .setName(school.getName())
-                        .setLocation(school.getLocation())
-                        .setDirector(new DirectorResource()
-                                .setId(school.getDirector().getId())
-                                .setName(school.getDirector().getName()))
-                        .setStudents(school.getStudents().stream()
-                                .map(student -> new StudentResource()
-                                        .setId(student.getId())
-                                        .setName(student.getName()))
-                                .collect(Collectors.toList()))
-                        .setTeachers(school.getTeachers().stream()
-                                .map(teacher -> new TeacherResource()
-                                        .setId(teacher.getId())
-                                        .setName(teacher.getName()))
-                                .collect(Collectors.toList())))
+                .map(this::mapSchool)
                 .collect(Collectors.toList());
+    }
+
+    public SchoolResource mapSchool(School school) {
+        return new SchoolResource()
+                .setId(school.getId())
+                .setName(school.getName())
+                .setLocation(school.getLocation())
+                .setDirector(new DirectorResource()
+                        .setId(school.getDirector().getId())
+                        .setName(school.getDirector().getName()))
+                .setStudents(school.getStudents().stream()
+                        .map(student -> new StudentResource()
+                                .setId(student.getId())
+                                .setName(student.getName()))
+                        .collect(Collectors.toList()))
+                .setTeachers(school.getTeachers().stream()
+                        .map(teacher -> new TeacherResource()
+                                .setId(teacher.getId())
+                                .setName(teacher.getName()))
+                        .collect(Collectors.toList()));
     }
 }

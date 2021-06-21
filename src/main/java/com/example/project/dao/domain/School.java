@@ -71,7 +71,7 @@ public class School {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Fetch(FetchMode.SELECT) // optionel car defaut
     // si je sais combien de relation il peut y avoir, rapide, pas d'impact sur le lazy loading : oblige à savoir !
-    @BatchSize(size = 1000)
+    @BatchSize(size = 50)
     @JoinTable(
             name = "SCHOOL_STUDENT",
             joinColumns = @JoinColumn(name = "SCHOOL_ID", referencedColumnName = "ID"),
@@ -98,8 +98,8 @@ public class School {
     // attention, le subselect a la portée de la requete principale !!!! donc potentiellement sans filtre
     // A ne pas utiliser sans filtre sur la requete principale
     // Clairement pas fait pour la pagination avec grappe de données
-    @BatchSize(size = 1000)
 //    @Fetch(FetchMode.SUBSELECT)
+    @BatchSize(size = 50)
     private Set<Teacher> teachers;
 
     /**

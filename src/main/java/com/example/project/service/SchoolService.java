@@ -12,6 +12,7 @@ import com.example.project.service.resource.CustomSlice;
 import com.example.project.service.resource.SchoolResource;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SchoolService {
 
@@ -23,7 +24,7 @@ public interface SchoolService {
 
     List<SchoolResource> findByBatch();
 
-    List<SchoolResource> findByLocation();
+    List<SchoolResource> findByLocation(String location);
 
     List<Student> findStudentsByLocationAndName();
 
@@ -34,4 +35,6 @@ public interface SchoolService {
     org.springframework.data.domain.Slice<SchoolView> findWithProjectionSlice(int page, int size);
 
     org.springframework.data.domain.Slice<SchoolDTO> findWithProjectionNativeSlice(int page, int size);
+
+    Optional<SchoolResource> findById(long id);
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -36,6 +37,11 @@ public class Controller {
         }
     }
 
+    @GetMapping("findById")
+    public Optional<SchoolResource> findById() {
+        return schoolService.findById(1L);
+    }
+
     @GetMapping("findAll")
     public List<School> findAll() {
         return schoolService.findAll();
@@ -48,7 +54,7 @@ public class Controller {
 
     @GetMapping("findByLocation")
     public List<SchoolResource> findByLocation() {
-        return schoolService.findByLocation();
+        return schoolService.findByLocation("ROUEN");
     }
 
     @GetMapping("findStudentsByLocationAndName")

@@ -14,8 +14,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface JpaSchoolRepository extends JpaRepository<School, String> {
+public interface JpaSchoolRepository extends JpaRepository<School, Long> {
+
+    @EntityGraph(attributePaths = {"director", "students", "teachers"})
+    Optional<School> findById(long id);
 
     // 1 seule requete, fait un produit cartesien, super rapide si les grappes sont de tailles résonnables (<100)
     // JPQL pur (Java Persistence Query Language), syntaxe controlée au démarrage, idéal pour récupération d'une seule grappe
@@ -44,8 +48,8 @@ public interface JpaSchoolRepository extends JpaRepository<School, String> {
     // Sinon erreur : "HHH000104: firstResult/maxResults specified with collection fetch; applying in memory"
     // On ne peut pas mélanger fetch et pagination, sinon on tronquerait les résultats, la BD ne le permet pas
     // le OneToOne ne pose pas de probleme car c'est le même tuple !! Donc il ne casse pas l'optimisation de la base
-    // @EntityGraph(attributePaths = {"director", "students", "teachers"})
-    @EntityGraph(attributePaths = {"director"})
+    @EntityGraph(attributePaths = {"director", "students", "teachers"})
+    //@EntityGraph(attributePaths = {"director"})
     @Query("SELECT sc FROM School sc")
     Page<School> findAllPagination(Pageable pageable);
 
