@@ -64,6 +64,7 @@ public class School {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "director_id")
+//    @Fetch(FetchMode.JOIN)
     private Director director;
 
     // si la resource Student est du type referentiel
@@ -82,7 +83,7 @@ public class School {
     )
     private Set<Student> students;
     // équivalent à ==>
-    //    @OneToMany(cascade = CascadeType.PERSIST)
+    //    @OneToMany
     //    private Set<Student> students
 
 

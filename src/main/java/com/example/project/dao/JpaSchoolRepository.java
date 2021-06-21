@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public interface JpaSchoolRepository extends JpaRepository<School, Long> {
 
-//    @EntityGraph(attributePaths = {"director", "students", "teachers"})
+//    @EntityGraph(attributePaths = {"director", "students", "teachers"}) // ou bien sur l'attribut director : @Fetch(FetchMode.JOIN)
     Optional<School> findById(long id);
 
     // 1 seule requete, fait un produit cartesien, super rapide si les grappes sont de tailles résonnables (<100)
@@ -56,7 +56,7 @@ public interface JpaSchoolRepository extends JpaRepository<School, Long> {
     // 3 requetes sans le count
     // pas toute la grappe ici pour répondre au "Hibernate N+1 query problem" avec une requete supplémentaire en mode BatchSize pour chaque OneToMany
     // le OneToOne ne pose pas de probleme car c'est le même tuple !!
-    @EntityGraph(attributePaths = {"director"})
+//    @EntityGraph(attributePaths = {"director"})
     @Query("SELECT sc FROM School sc")
     Slice<School> findAllSlice(Pageable pageable);
 
