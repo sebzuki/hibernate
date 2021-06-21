@@ -48,8 +48,8 @@ public interface JpaSchoolRepository extends JpaRepository<School, Long> {
     // Sinon erreur : "HHH000104: firstResult/maxResults specified with collection fetch; applying in memory"
     // On ne peut pas mélanger fetch et pagination, sinon on tronquerait les résultats, la BD ne le permet pas
     // le OneToOne ne pose pas de probleme car c'est le même tuple !! Donc il ne casse pas l'optimisation de la base
-    @EntityGraph(attributePaths = {"director", "students", "teachers"})
-    //@EntityGraph(attributePaths = {"director"})
+//    @EntityGraph(attributePaths = {"director", "students", "teachers"})
+    @EntityGraph(attributePaths = {"director"})
     @Query("SELECT sc FROM School sc")
     Page<School> findAllPagination(Pageable pageable);
 
