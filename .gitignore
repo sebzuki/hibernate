@@ -1,0 +1,6 @@
+# Maven
+target/
+/.idea/
+hibernate.iml
+test.mv.db
+test.trace.db

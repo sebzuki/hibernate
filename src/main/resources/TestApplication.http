@@ -1,0 +1,48 @@
+// @no-log
+GET http://localhost:8080/api/saveJPA
+###
+// @no-log
+GET http://localhost:8080/api/updateJPA
+###
+// @no-log
+GET http://localhost:8080/api/saveEM
+###
+// @no-log
+GET http://localhost:8080/api/updateEM
+###
+// @no-log
+GET http://localhost:8080/api/findAll
+###
+// @no-log
+GET http://localhost:8080/api/findAllPagination?page=0&size=25
+###
+// @no-log
+GET http://localhost:8080/api/findAllSlice?page=1&size=25
+###
+// @no-log
+GET http://localhost:8080/api/findWithProjection
+###
+// @no-log
+GET http://localhost:8080/api/findWithProjectionSlice?page=0&size=25
+###
+// @no-log
+GET http://localhost:8080/api/findWithProjectionNativeSlice?page=1&size=25
+###
+// @no-log
+GET http://localhost:8080/api/findById
+###
+// @no-log
+GET http://localhost:8080/api/findStudentsByLocationAndName
+###
+// @no-log
+GET http://localhost:8080/api/findAllManually
+###
+// @no-log
+GET http://localhost:8080/api/findByBatch
+###
+// @no-log
+GET http://localhost:8080/api/findByLocation
+###
+// @no-log
+GET http://localhost:8080/api/findById
+

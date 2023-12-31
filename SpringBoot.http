@@ -1,0 +1,36 @@
+// @no-log
+GET http://localhost:8080/api/saveJPA
+###
+
+// @no-log
+GET http://localhost:8080/api/findByLocation?loc=Location0
+###
+
+// @no-log
+GET http://localhost:8080/api/findStudentsByLocationAndName
+
+###
+// @no-log
+GET http://localhost:8080/api/findById/1
+
+###
+// @no-log
+GET http://localhost:8080/api/findAllPagination
+
+###
+// @no-log
+GET http://localhost:8080/api/findAllSlice
+
+###
+// @no-log
+GET http://localhost:8080/api/findWithProjection
+
+###
+// @no-log
+GET http://localhost:8080/api/findWithProjectionSlice
+
+###
+// @no-log
+GET http://localhost:8080/api/findAll
+
+
