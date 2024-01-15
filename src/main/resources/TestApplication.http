@@ -1,4 +1,7 @@
 // @no-log
+GET http://localhost:8080/api/findById/1
+###
+// @no-log
 GET http://localhost:8080/api/saveJPA
 ###
 // @no-log
@@ -9,6 +12,10 @@ GET http://localhost:8080/api/saveEM
 ###
 // @no-log
 GET http://localhost:8080/api/updateEM
+###
+// @no-log
+GET http://localhost:8080/api/findByLocation?loc=Location0
+
 ###
 // @no-log
 GET http://localhost:8080/api/findAll
@@ -35,14 +42,4 @@ GET http://localhost:8080/api/findById
 GET http://localhost:8080/api/findStudentsByLocationAndName
 ###
 // @no-log
-GET http://localhost:8080/api/findAllManually
-###
-// @no-log
 GET http://localhost:8080/api/findByBatch
-###
-// @no-log
-GET http://localhost:8080/api/findByLocation
-###
-// @no-log
-GET http://localhost:8080/api/findById
-

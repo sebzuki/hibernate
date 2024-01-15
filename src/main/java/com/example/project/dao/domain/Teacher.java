@@ -1,5 +1,6 @@
 package com.example.project.dao.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -30,6 +31,7 @@ public class Teacher {
 
     private String name;
 
+    @JsonIgnore // beurk resource obligatoire
     @ManyToOne(fetch = FetchType.LAZY) //, optional = false)
     @JoinColumn(name = "school_id") // optionnel
     private School school;

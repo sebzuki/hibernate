@@ -30,9 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @Service
 public class SchoolServiceImpl implements SchoolService {
@@ -75,10 +72,12 @@ public class SchoolServiceImpl implements SchoolService {
 
     /**
      * AVEC JPA REPOSITORY
-     **/
+     *
+     * @return
+     */
     @Override
     @Transactional
-    public void saveJPA() {
+    public long saveJPA() {
         // Première sauvegarde en mode grappe
         School school = new School()
                 .setLocation("Location")
@@ -89,22 +88,11 @@ public class SchoolServiceImpl implements SchoolService {
 
         School managedSchool = jpaSchoolRepository.save(school);    // BONUS saveAndFlush
 
-
-        managedSchool.setDirector(new Director("Director"))   // TEST 1 enrichisseement post sauvegarde
-                .setStudents(Set.of(
-                        new Student("StudentA"),
-                        new Student("StudentB")))
-                .setTeachers(Set.of(
-                        new Teacher().setName("TeacherA").setSchool(school), // TEST 2 bidirection
-                        new Teacher().setName("TeacherB").setSchool(school)));
-
-        // jpaSchoolRepository.save(managedSchool);       // TEST 3
-        // jpaSchoolRepository.flush();                   // TEST 4
+        return managedSchool.getId();
     }
 
     @Override
-    @Transactional
-    public void updateJPA() {
+    public void updateJPA(long id) {
     }
 
     /**
@@ -136,8 +124,6 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     // A noter l'absence de @Transactional ;)
     public List<School> findAll() {
-        // ici je ne fais pas de mapping donc si les fetch ne sont pas fait, lors du passage dans le controller,
-        // je vais avoir un lazy loading exception
         return jpaSchoolRepository.findAll();
 //        return schoolRepository.findAllWithCriteriaApi();
     }

@@ -37,13 +37,13 @@ public class Controller {
     }
 
     @GetMapping("saveJPA")
-    public void saveJPA() {
-        schoolService.saveJPA();
+    public long saveJPA() {
+        return schoolService.saveJPA();
     }
 
-    @GetMapping("updateJPA")
-    public void updateJPA() {
-        schoolService.updateJPA();
+    @GetMapping("updateJPA/{id}")
+    public void updateJPA(@PathVariable long id) {
+        schoolService.updateJPA(id);
     }
 
     @GetMapping("saveEM")

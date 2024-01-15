@@ -10,7 +10,6 @@ import com.example.project.dao.projection.SchoolView;
 import com.example.project.service.resource.CustomPage;
 import com.example.project.service.resource.CustomSlice;
 import com.example.project.service.resource.SchoolResource;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,19 +34,14 @@ public interface SchoolService {
 
     org.springframework.data.domain.Slice<SchoolDTO> findWithProjectionNativeSlice(int page, int size);
 
-    @Transactional
     void saveMASSE();
 
-    @Transactional
-    void saveJPA();
+    long saveJPA();
 
-    @Transactional
-    void updateJPA();
+    void updateJPA(long id);
 
-    @Transactional
     void saveEM();
 
-    @Transactional
     void updateEM();
 
     Optional<SchoolResource> findById(long id);
